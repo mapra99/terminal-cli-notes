@@ -95,5 +95,47 @@ Son programas que procesan texto y emiten el resultado.
 
   Se puede agregar una condicion para ejecutar el script. `NR` significa numero de la fila. (empezando por 1).
 
-  
+## Comunicacion y Administracion de Procesos
+
+### Esquema basico de un Proceso
+
+Un proceso tiene 3 flujos estándar entendidos por la terminal:
+
+- Entrada estándar
+- Salida estándar
+- Error estándar
+
+Puede haber más flujos, estos son los basicos
+
+Los medios por defecto de entrada y salida de un proceso son los perifericos del PC.. teclado para entrada y pantalla para salida.
+
+**Redirección** consiste en cambiar alguno de estos medios de entrada y salida.
+
+- Redireccionar la entrada de un proceso para recibirla desde un archivo en vez del teclado: Operador `<`.
+
+  `<command> < <filename>`
+
+  Por ejemplo:
+
+  `mysql -h 127.0.0.1 -u root -p 1234 < dump1.sql`
+
+- Redireccionar la salida de un proceso para almacenarla en un archivo: Operador `>` o `>>`
+
+  `<command> > <filename>`
+
+  `<command> >> <filename>`
+
+  `>` crea un archivo nuevo o sobreescribe el especificado, `>>` crea un archivo nuevo o escribe el especificado añadiendose al contenido existente.
+
+  Por ejemplo:
+
+  `ls > output.txt `
+
+- Redireccionar la salida de un proceso para convertirlo en la entrada de otro proceso, y asi sucesivamente: Operador `|` (pipe).
+
+  `<command1> | <command2> | <command3> | ...`
+
+  Por ejemplo:
+
+  `cat dump1.sql | wc -l`
 
