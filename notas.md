@@ -109,7 +109,9 @@ Puede haber más flujos, estos son los basicos
 
 Los medios por defecto de entrada y salida de un proceso son los perifericos del PC.. teclado para entrada y pantalla para salida.
 
-**Redirección** consiste en cambiar alguno de estos medios de entrada y salida.
+### Redireccionamiento de Procesos
+
+Consiste en cambiar alguno de estos medios de entrada y salida.
 
 - Redireccionar la entrada de un proceso para recibirla desde un archivo en vez del teclado: Operador `<`.
 
@@ -138,4 +140,40 @@ Los medios por defecto de entrada y salida de un proceso son los perifericos del
   Por ejemplo:
 
   `cat dump1.sql | wc -l`
+
+### Procesos Background y Foreground
+
+Cuando los procesos requieren tiempo para ejecutarse, se pueden enviar a un segundo plano de ejecucion (background). En la terminal se puede enviar un proceso al background agregando `&` al final.
+
+Por ejemplo:
+
+`mysql -h 127.0.0.1 -u root -p 1234 < dump1.sql &`
+
+Esto envia el proceso al background, y cuando se termine la terminal notifica.
+
+Tambien hay procesos que necesitan estar vivos constantemente, por ejemplo servidores. A esos procesos se les conoce como servicios o demons. Un proceso ingresado con un comando se puede convertir en servicio presionando `Ctrl + Z`. Se puede traer nuevamente al primer plano escribiendo el comando `fg`
+
+#### Ver los procesos activos
+
+`ps`  muestra los procesos que estoy ejecutando yo
+
+`ps ax` me arroja todos los procesos del sistema, junto con informacion adicional como el archivo que se esta ejecutando.
+
+`ps` y `ps aux` son utilidades batch, eso significa que se puede usar el pipe para relacionarlo con otros comandos, por ejemplo
+
+`ps aux | grep ruby` muestra todos los procesos que tienen la palabra ruby en algun lado.
+
+`top` es una utilidad interactiva que muestra los procesos que más recursos estan consumiendo, en tiempo real.
+
+#### Detener un proceso
+
+Los comandos `ps`, `ps aux` y `top` muestran entre otras cosas el PID (Process ID). Con este process ID se puede referenciar el proceso para detenerlo, usando el comando `kill` y `killall`.
+
+`kill` envía por default señales a los procesos para que se detengan. Se envía una señal para que el proceso no se detenga abruptamente, sino que el proceso reciba la señal y la procese cuando sea debido. Para detener un proceso abruptamente se envia el modificador `-9` al comando:
+
+`kill -9 <pid>`
+
+Por otro lado, `killall` detiene el proceso, pero recibe el nombre del archivo ejecutable, en lugar del PID.
+
+`killall ruby`
 
