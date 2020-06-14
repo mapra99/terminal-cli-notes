@@ -6,10 +6,10 @@ La terminal es un programa que recibe ordenes, las traduce a algo que el computa
 
 Se hace a traves de una interfaz de texto por razones de eficiencia.
 
-## Los Comandos
+## Sintaxis de los Comandos
 
 - Nombre de programa
-- Modificadores: Alteran lo que el programa va a hacer
+- Modificadores (flags o tags): Alteran lo que el programa va a hacer
 - Parámetros: Valores de entrada para el programa
 
 `comando --flag1 --flag2 arg1 arg2`
@@ -302,5 +302,13 @@ los `<defined_configs>` estan definidos en la carpeta `.ssh/`, con la clave publ
 - `export <varName>=<valor>`para declarar una variable de entorno
 - `<varName>=<valor> <comando>` para declarar una variable solamente para la ejecucion del comando 
 
+## Automatización de Tareas :D
 
+La terminal permite crear scripts, agrupaciones de comandos para ejecutarse cuando se ejecute el archivo en el que se guarda el mismo.
+
+### Programación de tareas
+
+`at now +2 minues`
+
+`crontab -e`
 
