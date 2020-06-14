@@ -177,3 +177,130 @@ Por otro lado, `killall` detiene el proceso, pero recibe el nombre del archivo e
 
 `killall ruby`
 
+### Sistema de permisos octal
+
+El sistema Unix tiene una arquitectura pensada para varios usuarios. Alrededor de un archivo hay 3 tipos de usuario:
+
+- Dueño
+- Grupo (Usuarios con acceso al archivo)
+- Otros
+
+En un archivo se pueden hacer 3 tipos de operación:
+
+- Lectura (`r`)
+- Escritura (`w`)
+- Ejecución (`x`)
+
+Los permisos se pueden cruzar con los tipos de usuario y generar esta matriz
+
+|           | Dueño | Grupo | Otros |
+| --------- | ----- | ----- | ----- |
+| Lectura   |       |       |       |
+| Escritura |       |       |       |
+| Ejecución |       |       |       |
+
+En la terminal con el comando `ls -l` se pueden ver los permisos que tiene cada usuario sobre cada archivo:
+
+`-rw-r--r-- 1 miguelprada staff  92 Jun 11 20:46 archivo.txt`
+
+La combinación `-rw-r--r--` muestra los permisos sobre el archivo.
+
+- `-` al comienzo indica que tipo de archivo es (`d` para directorio `l` para link y `-` para archivo)
+- `rw-` muestra los permisos del dueño: lectura y escritura pero no ejecución
+- `r--` muestra los permisos del grupo: solo lectura.
+- `r--` muestra los permisos de otros: solo lectura.
+
+#### Comandos para manipular los permisos
+
+- `chmod` permite cambiar los permisos que hay sobre un archivo
+
+  - Forma textual
+
+    `chmod o-w archivo.txt` le quita (`-`) el permiso de lectura (`w`) al owner (`o`).
+
+    `chmod +x archivo.txt` le agrega (`+`) el permiso de ejecución (`x`) a todos los archivos.
+
+  - Forma binaria
+
+    Los permisos son un valor binario: o se tienen o se tienen. Se puede ingresar la combinacion de permisos sobre un tipo de usuario con unos y ceros, por ejemplo:
+
+    - Solo lectura: `r-- => 100 = 4`
+    - Lectura y escritura: `rw- => 110 = 6`
+    - Lectura escritura y ejecucion: `rwx => 111 = 7`
+
+    `chmod 764 archivo.txt` genera los permisos `rwxrw-r--` a `archivo.txt`.
+
+- `chown` modifica el owner a un archivo (requiere `sudo`)
+
+- `chgrp` modifica el grupo a un archivo (requiere `sudo` o ser el owner).
+
+## Utilidades avanzadas
+
+### Compresión y Combinación de Archivos
+
+`gzip` y `tar` son utilidades muy usadas
+
+- `gzip`
+
+  `gzip <filename>` para comprimir un solo archivo. Genera un archivo con extensión .gz
+
+  `gzip -d <filename>` para descomprimirlo
+
+- `tar`
+
+  `tar cf backup.tar backup/*` **agrupa** todos los archivos del directorio `backup/*` y lo guarda en el archivo `backup.tar`
+
+  `tar xf backup.tar` para desagruparlos
+
+  `tar czf backup.tgz backup/*` **agrupa y comprime** los archivos
+
+  `tar xzf backup.tgz` para desagruparlos y descomprimir.
+
+### Busqueda de archivos
+
+- `locate` busca un archivo por su nombre en todo el sistema de archivos. Se basa en una base de datos que guarda el sistema de archivos, y se debe actualizar manualmente.
+
+  `sudo uptadedb` para actualizar la base de datos
+
+  `locate <filename>`
+
+- `whereis` ubica comandos.
+
+  `whereis echo`
+
+- `find` busca dentro de un directorio una serie de criterios
+
+  `find . -user mauro -perm 644` busca todos los archivos y carpetas que pertenezcan al usuario mauro (`-user mauro`) y que tengan permisos de lectura y escritura para owner y solo lectura para los demás (`-perm 644`).
+
+  `find . -type f -mtime +7` busca todos los archivos (`-type f`) que fueron modiifcados hace maximo 7 dias (`-mtime +7`)
+
+  `find . -type f -mtime + 7 -exec cp {} ./backup/ \;`
+
+### Interaccion con servidores web
+
+- `curl` es basica.. hace una peticion, obtiene una respuesta y la recibe en pantalla
+
+  `curl https://www.platzi.com`
+
+  `curl -v https://www.platzi.com` muestra tambien la interaccion HTTP necesaria antes de tener respuesta.
+
+  `curl -v https://www.platzi.com > /dev/null`
+
+- `wget` es mas flexible
+
+  `wget http://www.php.net/distributions/php/distributions`
+
+### Acceso seguro a otras computadores
+
+`ssh <defined_configs>`
+
+los `<defined_configs>` estan definidos en la carpeta `.ssh/`, con la clave publica y clave privada
+
+### Variables de entorno
+
+- `echo $<nombreVar>` para ver el valor de una variable
+- `export <varName>=<valor>`para declarar una variable de entorno
+- `<varName>=<valor> <comando>` para declarar una variable solamente para la ejecucion del comando 
+
+
+
